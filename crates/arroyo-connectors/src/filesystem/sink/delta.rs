@@ -139,7 +139,7 @@ async fn check_existing_files(
 }
 
 async fn commit_to_delta(table: &mut DeltaTable, add_actions: Vec<Action>) -> Result<i64> {
-    Ok(deltalake::operations::transaction::CommitBuilder::default()
+    Ok(deltalake::operations::transaction::CommitBuilder::from(deltalake::operations::transaction::CommitProperties::default())
         .with_actions(add_actions)
         .build(
             Some(table.snapshot()?),
