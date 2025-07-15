@@ -78,6 +78,7 @@ pub(crate) async fn load_or_create_table(
 
     let mut delta = DeltaTableBuilder::from_uri(&url)
         .with_storage_backend(backing_store, Url::parse(storage_provider.canonical_url())?)
+        .with_storage_options(storage_provider.storage_options().clone())
         .build()?;
 
     if delta.verify_deltatable_existence().await? {
