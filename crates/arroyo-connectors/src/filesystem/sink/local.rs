@@ -324,10 +324,11 @@ impl<V: LocalWriter + Send + 'static> TwoPhaseCommitter for LocalFileSystemWrite
             table,
         } = self.commit_state.as_mut().unwrap()
         {
-            if let Some(version) =
+            if let Some(_) =
                 delta::commit_files_to_delta(&finished_files, table, *last_version).await?
             {
-                *last_version = version;
+                table.update().await?;
+                *last_version = table.version();
             }
         }
         Ok(())

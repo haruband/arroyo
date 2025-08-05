@@ -949,10 +949,11 @@ where
             table,
         } = &mut self.commit_state
         {
-            if let Some(new_version) =
+            if let Some(_) =
                 delta::commit_files_to_delta(&finished_files, table, *last_version).await?
             {
-                *last_version = new_version;
+                table.update().await?;
+                *last_version = table.version();
             }
         }
         let finished_message = CheckpointData::Finished {
